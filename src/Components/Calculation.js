@@ -2,8 +2,10 @@ import AnswerItem from './AnswerItem.js';
 import { Component } from 'react';
 import axios from 'axios';
 import Input from './Input/Input.js';
-import classes from './Calculation.css'
-
+import classes from './Calculation.css';
+import {connect} from 'react-redux';
+import {Calculate, DeleteAll,Delete} from '../redux/actions/actions'
+import {Calculator} from '../redux/reducers/RootReducer'
 class Calculation extends Component{
   
   constructor (props){
@@ -60,24 +62,17 @@ class Calculation extends Component{
             N: true
           }
         }
-      },
-      AnswerList:[],
-      parameterList:[]
+      }
     }
-    this.deleteAllHandler=this.deleteAllHandler.bind(this);
-    this.calculateHandler=this.calculateHandler.bind(this);
+    // this.deleteAllHandler=this.deleteAllHandler.bind(this);
+    // this.calculateHandler=this.calculateHandler.bind(this);
   }
 
   deleteHandler(index){
-    let answerList = this.state.AnswerList;
-    answerList.splice(index,1);
-    this.setState({AnswerList:answerList});
-  }
-
-  deleteAllHandler()
-  {
-    const answerListNew=[]
-    this.setState({AnswerList:answerListNew})
+    this.props.onDel(index)
+    // let answerList = this.state.AnswerList;
+    // answerList.splice(index,1);
+    // this.setState({AnswerList:answerList});
   }
 
   validateBordersb(rb){
@@ -127,10 +122,10 @@ class Calculation extends Component{
   submitHandler = event => {
     event.preventDefault()
   }
-  myFunc(pos){
-    let tmp = pos*pos*pos/(3.0+pos)
-    return tmp;
-  }
+  // myFunc(pos){
+  //   let tmp = pos*pos*pos/(3.0+pos)
+  //   return tmp;
+  // }
   // calculateHandler(){
   //   let currentList=this.state.AnswerList;
   //   let result = 0;
@@ -145,8 +140,9 @@ class Calculation extends Component{
   //   currentList.unshift({answer:result, curA: a, curB: b, curN: n});
   //   this.setState({AnswerList:currentList})
   // }
-  calculateHandler(){
-    let currentList=this.state.AnswerList;
+  calculateHandler=()=>{
+    
+    let currentList=this.props.AnswerList;
     let integralVars = {
       a: this.state.formControls.a.value,
       b:  this.state.formControls.b.value,
@@ -158,18 +154,18 @@ class Calculation extends Component{
       'Content-Type': 'application/json'
     }
     //REACT_APP_PATH = "http://localhost:56619/api/Integral"  process.env.REACT_APP_PATH
-    axios.post(process.env.REACT_APP_PATH, jsonModel,{
+    axios.post("http://localhost:56619/api/Integral", jsonModel,{
       headers: headers
     })
       .then(res => {
-        console.log(res);
         console.log(res.data);
         currentList.unshift({answer:res.data.answer, curA: integralVars.a, curB: integralVars.b, curN: integralVars.n});
-        this.setState({AnswerList:currentList})
-        console.log(this.currentList);
+        console.log(currentList);
+        this.props.onCalc(currentList)
+        // this.setState({AnswerList:currentList})
       })
       .catch(error => console.log(error));
-      
+
   }
 
   renderInputs() {
@@ -192,7 +188,7 @@ class Calculation extends Component{
   } 
   render(){
    
-    let test = this.state.AnswerList.map((ans,index)=>{
+    let test = this.props.AnswerList.map((ans,index)=>{
       if(index===0)
         return (<div>
           <AnswerItem answer = {ans.answer} onDelete = {this.deleteHandler.bind(this, index)}
@@ -216,8 +212,8 @@ class Calculation extends Component{
             <form onSubmit={this.submitHandler} className={classes.CalculationForm}>
             { this.renderInputs() }
               <br/>
-              <button onClick = {this.calculateHandler}> Вычислить</button>
-              <button onClick ={this.deleteAllHandler}> Очистить</button>
+              <button onClick = {this.calculateHandler} > Вычислить</button>
+              <button onClick ={this.props.onDelAll}> Очистить</button>
             </form>
             { test }   
           </div>
@@ -226,4 +222,20 @@ class Calculation extends Component{
   }
 
 }
-export default Calculation;
+function mapStateToProps(state1){
+  return {
+    AnswerList: state1.AnswerList,
+  }
+}
+
+function mapDispatchToProps(dispatch){
+  return{
+    onCalc: (curList) => dispatch(Calculate(curList)),
+    onDelAll: () => dispatch(DeleteAll()),
+    onDel: (index) => dispatch(Delete(index))
+  }
+
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (Calculation)
