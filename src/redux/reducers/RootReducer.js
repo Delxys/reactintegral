@@ -8,12 +8,13 @@ export default function Calculator(state1=initialState, action){
   switch (action.type) {
     case CALC:
       return {
-        ...state1,
-        AnswerList: action.payload
+        state1,
+        AnswerList: action.payload.slice()
       }
     case DELALL:
       const answerListNew=[];
       return {
+        state1,
         AnswerList:answerListNew
         
       }
@@ -21,7 +22,8 @@ export default function Calculator(state1=initialState, action){
       let answerList = state1.AnswerList;
       answerList.splice(action.payload,1)
       return {
-        AnswerList:answerList
+        state1,
+        AnswerList:answerList.slice()
       }
     default:
       return state1

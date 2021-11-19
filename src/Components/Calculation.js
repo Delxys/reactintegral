@@ -140,8 +140,8 @@ class Calculation extends Component{
   //   currentList.unshift({answer:result, curA: a, curB: b, curN: n});
   //   this.setState({AnswerList:currentList})
   // }
-  calculateHandler=()=>{
-    
+  calculateHandler=(event)=>{
+    event.preventDefault()
     let currentList=this.props.AnswerList;
     let integralVars = {
       a: this.state.formControls.a.value,
@@ -212,7 +212,7 @@ class Calculation extends Component{
             <form onSubmit={this.submitHandler} className={classes.CalculationForm}>
             { this.renderInputs() }
               <br/>
-              <button onClick = {this.calculateHandler} > Вычислить</button>
+              <button onClick = {this.calculateHandler}> Вычислить</button>
               <button onClick ={this.props.onDelAll}> Очистить</button>
             </form>
             { test }   
@@ -224,7 +224,7 @@ class Calculation extends Component{
 }
 function mapStateToProps(state1){
   return {
-    AnswerList: state1.AnswerList,
+    AnswerList: state1.AnswerList
   }
 }
 
@@ -238,4 +238,4 @@ function mapDispatchToProps(dispatch){
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (Calculation)
+export default connect(mapStateToProps, mapDispatchToProps)(Calculation)
