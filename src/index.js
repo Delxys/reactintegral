@@ -17,6 +17,7 @@ ReactDOM.render(
       <NavLink className='link' exact='true' to="/" activestyle={{backgroundColor: '#FFB254'}}>Расчет</NavLink>  
       <NavLink className='link' to="/graph" activestyle={{backgroundColor: '#FFB254'}}>График функции</NavLink>  
       <NavLink className='link' to="/method" activestyle={{backgroundColor: '#FFB254'}}>Описание метода</NavLink>
+      <NavLink className='link' to="/quiz" activestyle={{backgroundColor: '#FFB254'}}>Тест</NavLink>
       </nav>  
       <Provider store = {store}>  
         <App/>

@@ -5,6 +5,8 @@ import Method from './Components/Method';
 import Gr from './gr'
 import Graph from './Components/Graph';
 import Calculation from './Components/Calculation';
+import Calc2 from './Components/Calc2';
+import Quiz from './Components/Quiz/Quiz';
 
 class App extends Component{
   
@@ -12,9 +14,11 @@ class App extends Component{
     return ( 
       <div>
         <Routes >
-          <Route exact="true" path="/" element={<Calculation/>} />
+          {/* <Route exact="true" path="/" element={<Calculation/>} /> */}
+          <Route exact="true" path="/" element={<Calc2/>} /> 
           <Route path="/graph" element={<Gr/>} />
           <Route path="/method" element={<Method/>}/>
+          <Route path="/quiz" element={<Quiz/>} />
         </Routes >
  
       </div>

@@ -21,11 +21,11 @@
     transition: all 300ms ease-in-out;
 }
 
-.Input,span {
+/* .Input,span {
     color: #f01f30;
     font-size: 12px;
     font-weight: bold;
-}
+} */
 
 .Input.invalid,label {
     color:  #29838C;

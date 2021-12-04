@@ -1,0 +1,10 @@
+.Quiz{
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    width: 100%;
+}
+.QuizWrapper{
+    width: 600px;
+    margin-top: 100px;
+}
